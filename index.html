@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script>
+
+    function printReceipt(cartList){
+
+        let dealCartList = cartListDeal(cartList);
+        let itemList = itemListDeal(dealCartList);
+        let total = totalDeal(itemList);
+        print(itemList,total);
+
+    }
+
+    function cartListDeal(cartList) {
+
+        let dealCartList = [];
+
+        for (let i = 0; i<cartList.length; i++) {
+            let existList= dealCartList.find(function(item) {
+                return item.barcode === cartList[i].barcode;
+            });
+            if (existList) {
+                existList.count ++;
+            }else {
+                dealCartList.push(Object.assign({},cartList[i],{count:1}));
+            }
+        }
+        return dealCartList;
+    }
+
+    function itemListDeal(delCartList) {
+
+        let itemList = [];
+
+        for(let i = 0; i<delCartList.length; i++) {
+            itemList.push(Object.assign({},delCartList[i],{
+                subtotal : delCartList[i].price *delCartList[i].count
+            }));
+        }
+        return itemList;
+
+    }
+
+    function totalDeal(itemList) {
+
+        let total = 0;
+
+        for(let i = 0; i<itemList.length; i++) {
+            total = total + itemList[i].subtotal;
+        }
+        return total;
+
+    }
+
+    function print(itemList, total){
+
+        for(let i = 0; i<itemList.length; i++) {
+            console.log("编号"+itemList[i].barcode + "   名称：" + itemList[i].name
+                    + "  单价：" + itemList[i].price + "  数量：" + itemList[i].count + itemList[i].unit
+                    + "  小计：" + itemList[i].subtotal);
+        }
+        console.log("总计:" + total);
+
+    }
+
+    let cartList=[
+        {
+            barcode:"Item00001",
+            name:"可口可乐",
+            unit:"瓶",
+            price:3
+        },
+        {
+            barcode:"Item00001",
+            name:"可口可乐",
+            unit:"瓶",
+            price:3
+        },
+        {
+            barcode:"Item00002",
+            name:"哇哈哈",
+            unit:"瓶",
+            price:2
+        },
+        {
+            barcode:"Item00003",
+            name:"王老吉",
+            unit:"罐",
+            price:3
+        },
+        {
+            barcode:"Item00003",
+            name:"王老吉",
+            unit:"罐",
+            price:3
+        }
+
+    ];
+    console.log(printReceipt(cartList));
+
+</script>
+</body>
+</html>
